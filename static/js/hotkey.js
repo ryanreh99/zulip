@@ -170,21 +170,12 @@ exports.processing_text = function () {
     return $focused_elt.is("input") ||
         $focused_elt.is("select") ||
         $focused_elt.is("textarea") ||
-        $focused_elt.hasClass("editable-section") ||
         $focused_elt.parents(".pill-container").length >= 1 ||
         $focused_elt.attr("id") === "compose-send-button";
 };
 
-exports.in_content_editable_widget = function (e) {
-    return $(e.target).is(".editable-section");
-};
-
 // Returns true if we handled it, false if the browser should.
-exports.process_escape_key = function (e) {
-    if (exports.in_content_editable_widget(e)) {
-        return false;
-    }
-
+exports.process_escape_key = function () {
     if (feedback_widget.is_open()) {
         feedback_widget.dismiss();
         return true;
@@ -287,11 +278,6 @@ exports.process_enter_key = function (e) {
 
     if (emoji_picker.reactions_popped()) {
         return emoji_picker.navigate('enter', e);
-    }
-
-    if (exports.in_content_editable_widget(e)) {
-        $(e.target).parent().find(".checkmark").click();
-        return false;
     }
 
     if (popovers.actions_popped()) {
@@ -508,12 +494,6 @@ exports.process_hotkey = function (e, hotkey) {
 
     if ((event_name === 'up_arrow' || event_name === 'down_arrow') && overlays.streams_open()) {
         return subs.switch_rows(event_name);
-    }
-
-    if (exports.in_content_editable_widget(e)) {
-        // We handle the enter key in process_enter_key().
-        // We ignore all other keys.
-        return false;
     }
 
     if (event_name === "up_arrow") {
