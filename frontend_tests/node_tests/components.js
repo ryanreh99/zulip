@@ -220,8 +220,7 @@ run_test('basics', () => {
     keydown_f.call(tabs[focused_tab], LEFT_KEY);
     assert.equal(widget.value(), 'translated: Keyboard shortcuts');
 
-    // Re-enable tab
-    tabs[1].removeClass('disabled');
+    widget.enable_tab("message-formatting");
 
     callback_args = undefined;
 

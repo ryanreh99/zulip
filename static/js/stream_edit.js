@@ -135,7 +135,7 @@ exports.open_edit_panel_for_row = function (stream_row) {
     subs.show_subs_pane.settings();
     $(stream_row).addClass("active");
     setup_subscriptions_stream_hash(sub);
-    exports.show_settings_for(stream_row);
+    exports.setup_stream_settings(stream_row);
 };
 
 exports.open_edit_panel_empty = function () {
@@ -366,7 +366,10 @@ exports.show_settings_for = function (node) {
         stream_post_policy_values: stream_data.stream_post_policy_values,
         message_retention_text: exports.get_retention_policy_text_for_subscription_type(sub),
     });
-    ui.get_content_element($('.subscriptions .right .settings')).html(html);
+    ui.get_content_element($('#stream_settings')).html(html);
+
+    $("#stream_settings .tab-container").prepend(exports.toggler.get());
+    stream_ui_updates.update_toggler_for_sub(sub);
 
     const sub_settings = exports.settings_for_sub(sub);
 
@@ -375,6 +378,27 @@ exports.show_settings_for = function (node) {
     sub_settings.addClass("show");
 
     show_subscription_settings(sub_settings);
+};
+
+exports.toggler = undefined;
+exports.select_tab = "personal_settings";
+
+exports.setup_stream_settings = function (node) {
+    exports.toggler = components.toggle({
+        child_wants_focus: true,
+        values: [
+            { label: i18n.t("General"), key: "general_settings" },
+            { label: i18n.t("Personal"), key: "personal_settings" },
+            { label: i18n.t("Subscribers"), key: "subscriber_settings" },
+        ],
+        callback: function (name, key) {
+            $(".stream_section").hide();
+            $("." + key).show();
+            exports.select_tab = key;
+        },
+    });
+
+    exports.show_settings_for(node);
 };
 
 function stream_is_muted_clicked(e) {

@@ -911,6 +911,10 @@ form#add_new_subscription {
         height: calc(100% - 45px);
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+
+        .tab-container {
+            padding-top: 5px;
+        }
     }
 
     .subscription_settings {

@@ -279,6 +279,7 @@ exports.update_settings_for_subscribed = function (sub) {
 
     if (exports.is_sub_already_present(sub)) {
         stream_data.update_subscribers_count(sub);
+        stream_ui_updates.update_toggler_for_sub(sub);
         stream_ui_updates.update_stream_row_in_settings_tab(sub);
         stream_ui_updates.update_subscribers_count(sub, true);
         stream_ui_updates.update_check_button_for_sub(sub);
@@ -313,6 +314,7 @@ exports.add_tooltips_to_left_panel = function () {
 
 exports.update_settings_for_unsubscribed = function (sub) {
     exports.rerender_subscriptions_settings(sub);
+    stream_ui_updates.update_toggler_for_sub(sub);
     stream_ui_updates.update_check_button_for_sub(sub);
     stream_ui_updates.update_settings_button_for_sub(sub);
     stream_ui_updates.update_regular_sub_settings(sub);

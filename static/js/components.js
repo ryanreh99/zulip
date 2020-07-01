@@ -117,6 +117,13 @@ exports.toggle = function (opts) {
             meta.$ind_tab.eq(idx).addClass('disabled');
         },
 
+        enable_tab: function (name) {
+            const value = opts.values.find((o) => o.key === name);
+
+            const idx = opts.values.indexOf(value);
+            meta.$ind_tab.eq(idx).removeClass('disabled');
+        },
+
         value: function () {
             if (meta.idx >= 0) {
                 return opts.values[meta.idx].label;
