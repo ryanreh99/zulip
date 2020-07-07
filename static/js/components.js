@@ -45,7 +45,7 @@ exports.toggle = function (opts) {
     function select_tab(idx) {
         const elem = meta.$ind_tab.eq(idx);
         if (elem.hasClass('disabled')) {
-            return;
+            return false;
         }
         meta.$ind_tab.removeClass("selected");
 
@@ -62,19 +62,26 @@ exports.toggle = function (opts) {
         if (!opts.child_wants_focus) {
             elem.focus();
         }
+        return true;
     }
 
     function maybe_go_left() {
-        if (meta.idx > 0) {
-            select_tab(meta.idx - 1);
-            return true;
+        let i = 1;
+        while (meta.idx - i >= 0) {
+            if (select_tab(meta.idx - i)) {
+                return true;
+            }
+            i += 1;
         }
     }
 
     function maybe_go_right() {
-        if (meta.idx < opts.values.length - 1) {
-            select_tab(meta.idx + 1);
-            return true;
+        let i = 1;
+        while (meta.idx + i <= opts.values.length - 1) {
+            if (select_tab(meta.idx + i)) {
+                return true;
+            }
+            i += 1;
         }
     }
 
@@ -99,6 +106,7 @@ exports.toggle = function (opts) {
     }());
 
     const prototype = {
+        // Skip disabled tabs and go to the next one.
         maybe_go_left: maybe_go_left,
         maybe_go_right: maybe_go_right,
 
