@@ -6,12 +6,16 @@ const render_subscriptions = require('../templates/subscriptions.hbs');
 
 exports.show_subs_pane = {
     nothing_selected: function () {
-        $(".nothing-selected, #stream_settings_title").show();
-        $("#add_new_stream_title, .settings, #stream-creation").hide();
+        $(".stream-info-title, .settings, #stream-creation").hide();
+        $("#stream_settings_title, .nothing-selected").show();
     },
     settings: function () {
-        $(".settings, #stream_settings_title").show();
-        $("#add_new_stream_title, #stream-creation, .nothing-selected").hide();
+        $(".stream-info-title, .settings, #stream-creation").hide();
+        $("#stream_settings_title, .settings").show();
+    },
+    create_stream: function () {
+        $(".stream-info-title, .nothing-selected, .settings, #stream-creation").hide();
+        $("#add_new_stream_title, #stream-creation").show();
     },
 };
 
