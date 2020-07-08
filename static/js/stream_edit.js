@@ -176,7 +176,7 @@ exports.update_stream_description = function (sub) {
     const stream_settings = exports.settings_for_sub(sub);
     stream_settings.find('input.description').val(sub.description);
     stream_settings.find('.sub-stream-description').html(
-        util.clean_user_content_links(sub.rendered_description)
+        util.clean_user_content_links(sub.rendered_description),
     );
 };
 
@@ -570,7 +570,7 @@ exports.initialize = function () {
     $("#subscriptions_table").on('click', '#change-stream-privacy-button',
                                  change_stream_privacy);
 
-    $("#subscriptions_table").on("click", '#open_stream_info_modal', function (e) {
+    $("#subscriptions_table").on("click", '#open_stream_info_modal', (e) => {
         e.preventDefault();
         e.stopPropagation();
         const stream_id = get_stream_id(e.target);
@@ -586,7 +586,7 @@ exports.initialize = function () {
         overlays.open_modal('#change_stream_info_modal');
     });
 
-    $("#subscriptions_table").on("keypress", '#change_stream_description', function (e) {
+    $("#subscriptions_table").on("keypress", '#change_stream_description', (e) => {
         // Stream descriptions can not be multiline, so disable enter key
         // to prevent new line
         if (e.keyCode === 13) {
@@ -594,7 +594,7 @@ exports.initialize = function () {
         }
     });
 
-    $("#subscriptions_table").on("click", '#save_stream_info', function (e) {
+    $("#subscriptions_table").on("click", '#save_stream_info', (e) => {
         e.preventDefault();
         e.stopPropagation();
         const sub = get_sub_for_target(e.currentTarget);
@@ -614,7 +614,7 @@ exports.initialize = function () {
         settings_ui.do_settings_change(channel.patch, url, data, status_element);
     });
 
-    $("#subscriptions_table").on('click', '.close-privacy-modal, .close-change-stream-info-modal', function (e) {
+    $("#subscriptions_table").on('click', '.close-privacy-modal, .close-change-stream-info-modal', (e) => {
         // Re-enable background mouse events when we close the modal
         // via the "x" in the corner.  (The other modal-close code
         // paths call `overlays.close_modal`, rather than using

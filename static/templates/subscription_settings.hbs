@@ -11,7 +11,7 @@
                 <span class="sub-stream-name" title="{{name}}">{{name}}</span>
             </div>
             <div class="button-group">
-                <button id="open_stream_info_modal" class="button rounded small btn-warning" title="{{t 'Change stream info' }}">
+                <button id="open_stream_info_modal" class="button rounded small btn-warning" {{#unless can_change_stream_permissions}}style="display: none;"{{/unless}} title="{{t 'Change stream info' }}">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </button>
                 <div class="sub_unsub_button_wrapper inline-block">
