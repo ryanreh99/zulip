@@ -821,6 +821,7 @@ exports.deactivate = function () {
             then_scroll: true,
             use_closest: true,
             empty_ok: true,
+            mark_read: false,
         };
 
         // We fall back to the closest selected id, if the user has removed a
