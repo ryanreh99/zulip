@@ -70,7 +70,8 @@ exports.save_pre_narrow_offset_for_reload = function () {
                 render_end: current_msg_list.view._render_win_end,
             });
         }
-        current_msg_list.pre_narrow_offset = current_msg_list.selected_row().offset().top;
+        current_msg_list.pre_narrow_offset =
+            current_msg_list.selected_row().offset().top - message_viewport.scrollTop();
     }
 };
 
@@ -203,7 +204,7 @@ exports.activate = function (raw_operators, opts) {
         if (opts.then_select_offset === undefined) {
             const row = current_msg_list.get_row(opts.then_select_id);
             if (row.length > 0) {
-                opts.then_select_offset = row.offset().top;
+                opts.then_select_offset = row.offset().top - message_viewport.scrollTop();
             }
         }
     }

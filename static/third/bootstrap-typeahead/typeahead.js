@@ -173,6 +173,7 @@
       if (this.dropup) {
         top_pos = pos.top - this.$container.outerHeight()
       }
+      top_pos = top_pos - $(window).scrollTop()
 
       this.$container.css({
         top: top_pos

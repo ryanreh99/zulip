@@ -13,7 +13,8 @@ exports.update_is_muted = function (sub, value) {
             home_msg_list === current_msg_list &&
             current_msg_list.selected_row().offset() !== null
         ) {
-            msg_offset = current_msg_list.selected_row().offset().top;
+            msg_offset =
+                current_msg_list.selected_row().offset().top - message_viewport.scrollTop();
         }
 
         home_msg_list.clear({clear_selected_id: false});

@@ -5,7 +5,9 @@ const XDate = require("xdate");
 let is_floating_recipient_bar_showing = false;
 
 function top_offset(elem) {
-    return elem.offset().top - $("#message_view_header").safeOuterHeight();
+    return (
+        elem.offset().top - $("#navbar-middle").offset().top - $("#navbar-middle").safeOuterHeight()
+    );
 }
 
 exports.first_visible_message = function (bar) {

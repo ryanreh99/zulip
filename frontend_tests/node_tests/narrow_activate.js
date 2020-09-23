@@ -29,6 +29,9 @@ set_global("message_list", {
 });
 set_global("message_scroll", {});
 set_global("message_util", {});
+set_global("message_viewport", {
+    scrollTop: () => 0,
+});
 set_global("notifications", {});
 set_global("page_params", {});
 set_global("search", {});

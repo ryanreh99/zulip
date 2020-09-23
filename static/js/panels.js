@@ -4,7 +4,7 @@ const util = require("./util");
 
 const resize_app = function () {
     const panels_height = $("#panels").height();
-    $("body > .app").height("calc(100% - " + panels_height + "px)");
+    $(".header").css("top", panels_height + "px");
 
     // the floating recipient bar is usually positioned right below
     // the `.header` element (including padding).

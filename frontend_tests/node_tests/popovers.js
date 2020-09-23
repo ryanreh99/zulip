@@ -16,6 +16,7 @@ zrequire("message_edit");
 
 const noop = function () {};
 $.fn.popover = noop; // this will get wrapped by our code
+$(window).on = () => {};
 
 set_global("current_msg_list", {});
 set_global("page_params", {
