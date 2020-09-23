@@ -103,7 +103,6 @@ exports.initialize = function () {
         prev_sender = all_senders.last();
     });
 
-    $(".app").scrollTop($(".app").height());
     all_message_timestamps_to_human_readable();
 };
 
@@ -137,7 +136,7 @@ $(() => {
     $.fn.safeOuterWidth = function (...args) {
         return this.outerWidth(...args) || 0;
     };
-    $(".app").on(
+    $(window).on(
         "scroll",
         _.throttle(() => {
             scroll_finish();

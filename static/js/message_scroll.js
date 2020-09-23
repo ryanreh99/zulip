@@ -156,7 +156,7 @@ function scroll_finish() {
 }
 
 exports.initialize = function () {
-    message_viewport.message_pane.on(
+    $(window).on(
         "scroll",
         _.throttle(() => {
             unread_ops.process_visible();

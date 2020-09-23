@@ -49,7 +49,7 @@ function preserve_state(send_after_reload, save_pointer, save_narrow, save_compo
         const row = home_msg_list.selected_row();
         if (!narrow_state.active()) {
             if (row.length > 0) {
-                url += "+offset=" + row.offset().top;
+                url += "+offset=" + row.offset().top - message_viewport.scrollTop();
             }
         } else {
             url += "+offset=" + home_msg_list.pre_narrow_offset;
@@ -60,7 +60,7 @@ function preserve_state(send_after_reload, save_pointer, save_narrow, save_compo
             }
             const narrow_row = message_list.narrowed.selected_row();
             if (narrow_row.length > 0) {
-                url += "+narrow_offset=" + narrow_row.offset().top;
+                url += "+narrow_offset=" + narrow_row.offset().top - message_viewport.scrollTop();
             }
         }
     }
