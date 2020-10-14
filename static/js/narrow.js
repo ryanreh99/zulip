@@ -549,6 +549,9 @@ exports.update_selection = function (opts) {
     let msg_id = id_info.final_select_id;
     if (msg_id === undefined) {
         msg_id = message_list.narrowed.first_unread_message_id();
+        if (msg_id === undefined) {
+            msg_id = message_list.narrowed.last().id;
+        }
     }
 
     const preserve_pre_narrowing_screen_position =
@@ -835,6 +838,9 @@ exports.deactivate = function () {
             // where we were before the narrow, go to our first unread message (or
             // the bottom of the feed, if there are no unread messages).
             message_id_to_select = current_msg_list.first_unread_message_id();
+            if (message_id_to_select === undefined) {
+                message_id_to_select = current_msg_list.last().id;
+            }
         } else {
             // We narrowed, but only backwards in time (ie no unread were read). Try
             // to go back to exactly where we were before narrowing.

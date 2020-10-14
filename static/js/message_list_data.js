@@ -190,9 +190,7 @@ class MessageListData {
         if (first_unread) {
             return first_unread.id;
         }
-
-        // if no unread, return the bottom message
-        return this.last().id;
+        return undefined;
     }
 
     add_messages(messages) {
