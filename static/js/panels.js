@@ -2,6 +2,16 @@
 
 const util = require("./util");
 
+exports.update_message_header = function () {
+    // On initial page load the sticky property does not work.
+    // Thus we reapply the property when the elements have loaded into the DOM.
+    const frb_top =
+        $("#panels").height() +
+        $(".header").height() +
+        Number.parseInt($(".header").css("paddingBottom"), 10);
+    $(".message_header").css({position: "sticky", top: frb_top + "px"});
+};
+
 const resize_app = function () {
     const panels_height = $("#panels").height();
     $(".header").css("top", panels_height + "px");
@@ -12,7 +22,9 @@ const resize_app = function () {
         panels_height +
         $(".header").height() +
         Number.parseInt($(".header").css("paddingBottom"), 10);
+    exports.update_message_header();
     $("#floating_recipient_bar").css("top", frb_top + "px");
+    $("#message_view_header_underpadding").css("top", panels_height + $(".header").height() + "px");
 };
 
 exports.resize_app = resize_app;

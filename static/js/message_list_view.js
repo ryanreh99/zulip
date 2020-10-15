@@ -824,6 +824,7 @@ class MessageListView {
             }
         }
 
+        panels.update_message_header();
         return undefined;
     }
 
