@@ -261,7 +261,7 @@ exports.candidate_recipient_bar = function () {
 
 function show_floating_recipient_bar() {
     if (!is_floating_recipient_bar_showing) {
-        $("#floating_recipient_bar").css("visibility", "visible");
+        $("#floating_recipient_bar").css("visibility", "hidden");
         is_floating_recipient_bar_showing = true;
     }
 }

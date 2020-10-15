@@ -346,7 +346,6 @@ p.n-margin {
     .column-left .left-sidebar,
     .column-right .right-sidebar {
         position: fixed;
-        margin-top: $sidebar_top;
         z-index: 100;
     }
 
@@ -362,6 +361,11 @@ p.n-margin {
 
     .column-middle {
         min-height: 100%;
+
+        .column-middle-inner {
+            /* Override Bootstrap's tab-content class property. */
+            overflow: visible !important;
+        }
     }
 }
 
@@ -868,8 +872,9 @@ td.pointer {
     white-space: nowrap;
     font-weight: 600;
     line-height: 14px;
-    position: relative;
-    z-index: 0;
+    position: sticky;
+    top: $sidebar_top;
+    z-index: 90;
 }
 
 .message_list {
@@ -1084,7 +1089,7 @@ td.pointer {
        private messages, mentions, and unread messages */
 
     .message-header-contents {
-        background-color: hsla(192, 19%, 75%, 0.2);
+        background-color: hsl(192, 20%, 95%);
         box-shadow: inset 1px 1px 0 hsl(0, 0%, 88%);
     }
 }
@@ -1856,7 +1861,7 @@ div.focused_table {
 }
 
 #message_view_header_underpadding {
-    position: absolute;
+    position: fixed;
     width: 100%;
     top: $header_height;
     height: $header_padding_bottom;
@@ -2060,6 +2065,7 @@ div.floating_recipient {
 
 #floating_recipient_bar {
     top: $sidebar_top;
+    visibility: hidden;
 }
 
 #bottom_whitespace {
