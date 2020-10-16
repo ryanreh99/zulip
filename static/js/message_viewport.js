@@ -28,13 +28,14 @@ exports.message_viewport_info = function () {
 
     const res = {};
 
-    const element_just_above_us = $(".floating_recipient");
+    const element_just_above_us = $("#message_view_header_underpadding");
     const element_just_below_us = $("#compose");
 
     res.visible_top =
         element_just_above_us.offset().top -
         jwindow.scrollTop() +
-        element_just_above_us.safeOuterHeight();
+        element_just_above_us.safeOuterHeight() +
+        24; // message header height
 
     res.visible_bottom = element_just_below_us.position().top;
 
@@ -154,9 +155,9 @@ function add_to_visible(
 const top_of_feed = new util.CachedValue({
     compute_value() {
         return (
-            $(".floating_recipient").offset().top -
+            $("#message_view_header_underpadding").offset().top -
             message_viewport.scrollTop() +
-            $(".floating_recipient").safeOuterHeight()
+            $("#message_view_header_underpadding").safeOuterHeight()
         );
     },
 });

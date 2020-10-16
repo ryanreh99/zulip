@@ -13,7 +13,7 @@ function update_table_stream_color(table, stream_name, color) {
     const style = color;
     const color_class = exports.get_color_class(color);
 
-    const stream_labels = $("#floating_recipient_bar").add(table).find(".stream_label");
+    const stream_labels = table.find(".stream_label");
 
     for (const label of stream_labels) {
         const $label = $(label);
@@ -45,7 +45,7 @@ function update_stream_sidebar_swatch_color(id, color) {
 
 function update_historical_message_color(stream_name, color) {
     update_table_stream_color($(".focused_table"), stream_name, color);
-    if ($(".focused_table").attr("id") !== "#zhome") {
+    if ($(".focused_table").attr("id") !== "zhome") {
         update_table_stream_color($("#zhome"), stream_name, color);
     }
 }
