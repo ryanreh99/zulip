@@ -880,7 +880,7 @@ td.pointer {
 .message_list {
     .recipient_row {
         border-bottom: 1px solid hsl(0, 0%, 88%);
-        margin-bottom: 10px;
+        margin-top: 10px;
     }
 }
 
@@ -1103,6 +1103,22 @@ td.pointer {
     .date_row {
         background-color: hsla(192, 19%, 75%, 0.2);
         box-shadow: inset 2px 0 0 0 hsl(0, 0%, 27%), -1px 0 0 0 hsl(0, 0%, 27%);
+    }
+}
+
+.dates {
+    position: sticky;
+    width: 62px;
+    height: 24px;
+    line-height: 24px;
+    margin-left: auto;
+    padding: 0 6px;
+    z-index: 100;
+    background-color: hsl(0, 0%, 27%);
+    color: hsl(0, 0%, 100%);
+
+    .date_text {
+        float: right;
     }
 }
 
@@ -2433,7 +2449,7 @@ div.topic_edit_spinner .loading_indicator_spinner {
 .sub-unsub-message span::before,
 .date_row span::before {
     right: 0.5em;
-    margin-left: -50%;
+    /* margin-left: -50%; */
 }
 
 .sub-unsub-message span::after,

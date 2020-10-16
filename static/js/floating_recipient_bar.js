@@ -309,7 +309,7 @@ exports.hide = function () {
 
 exports.de_clutter_dates = function (items) {
     for (const item of items) {
-        item.elem.find(".recipient_row_date").toggle(item.show_date);
+        //item.elem.find(".recipient_row_date").toggle(item.show_date);
     }
 };
 

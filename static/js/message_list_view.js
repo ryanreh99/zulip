@@ -1170,6 +1170,30 @@ class MessageListView {
         }
     }
 
+    // Paste in console.
+
+    /*
+var container = $();
+for (var elem of $(".focused_table").children()) {
+    elem = $(elem);
+    if (elem.hasClass("recipient_row")) {
+        container = container.add(elem);
+    } else {
+        container.wrapAll("<div class='wrapped_date_group'></div>");
+        container = $();
+    }
+}
+container.wrapAll("<div class='wrapped_date_group'></div>");
+
+for (var elem of $(".wrapped_date_group")) {
+    elem = $(elem)
+    height = $("#floating_recipient_bar").offset().top - $(window).scrollTop();
+    var down = "<i class='date-direction fa fa-caret-down'></i>";
+    var date = $(elem.find(".recipient_row_date > span")[0]).text();
+    date = "<span class='date_text'>" + date + "</span>";
+    elem.prepend("<div class='dates recipient_row_date' style=' top: " + height + "px;'>" + down + date + "</div>");
+}
+*/
     append(messages, messages_are_new) {
         const cur_window_size = this._render_win_end - this._render_win_start;
         let render_info;
