@@ -66,6 +66,7 @@ import "../fetch_status";
 import "../message_list_data";
 import "../message_list_view";
 import "../message_list";
+import "../message_list_data_cache";
 import "../message_live_update";
 import "../narrow_state";
 import "../narrow";

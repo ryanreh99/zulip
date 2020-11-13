@@ -7,6 +7,7 @@ const {run_test} = require("../zjsunit/test");
 const {make_zjquery} = require("../zjsunit/zjquery");
 
 const util = zrequire("util");
+const message_list_data_cache = zrequire("message_list_data_cache");
 set_global("$", make_zjquery());
 
 zrequire("narrow_state");
@@ -17,6 +18,7 @@ zrequire("stream_data");
 zrequire("Filter", "js/filter");
 zrequire("FetchStatus", "js/fetch_status");
 zrequire("MessageListData", "js/message_list_data");
+zrequire("hash_util");
 zrequire("unread");
 zrequire("narrow");
 zrequire("search_pill");
@@ -66,6 +68,8 @@ set_global("setTimeout", (f, t) => {
 set_global("muting", {
     is_topic_muted: () => false,
 });
+
+const mld_cache = message_list_data_cache.mld_cache;
 
 const denmark = {
     subscribed: false,
@@ -185,20 +189,30 @@ run_test("basics", () => {
     };
 
     let cont;
+    let fetch_messages;
 
     message_fetch.load_messages_for_narrow = (opts) => {
         cont = opts.cont;
+        fetch_messages = true;
 
+        let anchor = 1000;
+        if (!message_list.all.data.fetch_status.has_found_newest()) {
+            anchor = "first_unread";
+        }
         assert.deepEqual(opts, {
             cont: opts.cont,
-            anchor: 1000,
+            anchor,
         });
     };
+
+    assert.equal(mld_cache.keys().length, 0);
 
     narrow.activate(terms, {
         then_select_id: selected_id,
     });
 
+    assert(fetch_messages);
+    assert.equal(mld_cache.keys().length, 1);
     assert.equal(message_list.narrowed.selected_id, selected_id);
     assert.equal(message_list.narrowed.view.offset, 25);
     assert.equal(narrow_state.narrowed_to_pms(), false);
@@ -224,6 +238,7 @@ run_test("basics", () => {
     current_msg_list.get_row = () => row;
     util.sorted_ids = () => [];
 
+    fetch_messages = false;
     narrow.activate([{operator: "is", operand: "private"}], {
         then_select_id: selected_id,
     });
@@ -238,4 +253,23 @@ run_test("basics", () => {
     helper.clear();
     cont();
     helper.assert_events(["report narrow times"]);
+
+    current_msg_list.selected_id = () => -1;
+
+    fetch_messages = false;
+    narrow.activate(terms, {});
+    // The MLD key already exists in our cache.
+    assert(!fetch_messages);
+    assert.equal(mld_cache.keys().length, 1);
+
+    message_list.all.data.fetch_status.has_found_newest = () => false;
+    current_msg_list.selected_id = () => -1;
+
+    mld_cache.empty();
+    fetch_messages = false;
+    narrow.activate(terms, {});
+    // We can start caching the MLD objects only when
+    // we have fetched all the latest messages.
+    assert(fetch_messages);
+    assert.equal(mld_cache.keys().length, 0);
 });
