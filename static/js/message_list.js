@@ -415,6 +415,16 @@ exports.all = new MessageList({
     muting_enabled: false,
 });
 
+function all_message_lists() {
+    const message_lists = [exports.all, home_msg_list];
+    if (current_msg_list === exports.narrowed) {
+        message_lists.push(exports.narrowed);
+    }
+    return message_lists;
+}
+
+window.all_message_lists = all_message_lists;
+
 // We stop autoscrolling when the user is clearly in the middle of
 // doing something.  Be careful, though, if you try to capture
 // mousemove, then you will have to contend with the autoscroll

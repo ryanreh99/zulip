@@ -53,6 +53,28 @@ exports.get_muted_topics = function () {
     return topics;
 };
 
+exports.get_unmuted_topics = function (tuples) {
+    // Returns an array of unmuted topics in the same
+    // format as "muted_topics" event's data is received.
+    //
+    // The server sends an array of all muted topics.
+    // Thus we do not know if any topic has been unmuted.
+    // We require these unmuted narrows to update their
+    // respective MLD objects, which previously had muted
+    // enabled in our cache.
+    for (const tuple of tuples) {
+        const stream_name = tuple[0];
+        const stream_id = stream_data.get_sub(stream_name).stream_id;
+        const topic = tuple[1];
+        // We can remove this now as we will clear our
+        // muted_topics cache in the next step.
+        exports.remove_muted_topic(stream_id, topic);
+    }
+
+    const remaining_muted_topics = exports.get_muted_topics();
+    return remaining_muted_topics.map((obj) => [obj.stream, obj.topic]);
+};
+
 exports.set_muted_topics = function (tuples) {
     muted_topics.clear();
 

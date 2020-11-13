@@ -1,7 +1,10 @@
 "use strict";
 
+const message_list_data_cache = require("./message_list_data_cache");
 const people = require("./people");
 const util = require("./util");
+
+const mld_cache = message_list_data_cache.mld_cache;
 // Docs: https://zulip.readthedocs.io/en/latest/subsystems/sending-messages.html
 
 const waiting_for_id = new Map();
@@ -361,9 +364,8 @@ exports.message_send_error = function (message_id, error_response) {
 
 function abort_message(message) {
     // Remove in all lists in which it exists
-    for (const msg_list of [message_list.all, home_msg_list, current_msg_list]) {
-        msg_list.remove_and_rerender([message.id]);
-    }
+    all_message_lists().forEach((ml) => ml.remove_and_rerender([message.id]));
+    mld_cache.forEach((mld) => mld.remove([message.id]));
 }
 
 exports.initialize = function () {

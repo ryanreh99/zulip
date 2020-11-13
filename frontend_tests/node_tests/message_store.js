@@ -10,8 +10,15 @@ const {make_zjquery} = require("../zjsunit/zjquery");
 const util = zrequire("util");
 zrequire("pm_conversations");
 const people = zrequire("people");
+zrequire("stream_data");
+zrequire("hash_util");
 zrequire("message_store");
+zrequire("Filter", "js/filter");
+zrequire("FetchStatus", "js/fetch_status");
+zrequire("MessageListData", "js/message_list_data");
+const message_list_data_cache = zrequire("message_list_data_cache");
 
+const mld_cache = message_list_data_cache.mld_cache;
 const noop = function () {};
 
 set_global("$", make_zjquery());
@@ -347,6 +354,16 @@ run_test("message_id_change", () => {
 
     set_global("message_list", {});
     set_global("home_msg_list", {});
+    set_global("all_message_lists", () => [home_msg_list]);
+
+    // Added to pass single line coverage.
+    const operators = [{operator: "stream", operand: "foo"}];
+    const mld = new MessageListData({
+        muting_enabled: false,
+        filter: new Filter(operators),
+    });
+    mld.append([{id: 1}]);
+    mld_cache.add(mld);
 
     const opts = {
         old_id: 401,

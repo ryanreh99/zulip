@@ -3,13 +3,34 @@
 const render_muted_topic_ui_row = require("../templates/muted_topic_ui_row.hbs");
 const render_topic_muted = require("../templates/topic_muted.hbs");
 
+const message_list_data_cache = require("./message_list_data_cache");
+
+const mld_cache = message_list_data_cache.mld_cache;
+
 function timestamp_ms() {
     return new Date().getTime();
 }
 
 let last_topic_update = 0;
 
-exports.rerender = function () {
+function update_MLD_muting(tuples, action) {
+    for (const tuple of tuples) {
+        const operators = [
+            {operator: "stream", operand: tuple[0]},
+            {operator: "topic", operand: tuple[1]},
+        ];
+        const list_data = mld_cache.get_valid_mlds(new Filter(operators));
+        list_data.forEach((mld) => {
+            if (action === "unmute") {
+                mld_cache.delete(mld.filter);
+            } else {
+                mld.update_items_for_muting();
+            }
+        });
+    }
+}
+
+exports.rerender = function (topics, action) {
     // Note: We tend to optimistically rerender muting preferences before
     // the backend actually acknowledges the mute.  This gives a more
     // immediate feel to the user, and if the backend fails temporarily,
@@ -22,6 +43,7 @@ exports.rerender = function () {
     if (current_msg_list !== home_msg_list) {
         home_msg_list.update_muting_and_rerender();
     }
+    update_MLD_muting(topics, action);
     if (overlays.settings_open() && settings_muting.loaded) {
         exports.set_up_muted_topics_ui();
     }
@@ -64,12 +86,14 @@ exports.handle_updates = function (muted_topics) {
     }
 
     exports.update_muted_topics(muted_topics);
-    exports.rerender();
 };
 
 exports.update_muted_topics = function (muted_topics) {
+    const unmuted_topics = muting.get_unmuted_topics(muted_topics);
+    update_MLD_muting(unmuted_topics, "unmute");
     muting.set_muted_topics(muted_topics);
     unread_ui.update_unread_counts();
+    exports.rerender(muted_topics, "mute");
 };
 
 exports.set_up_muted_topics_ui = function () {
@@ -102,7 +126,7 @@ exports.mute = function (stream_id, topic) {
     stream_popover.hide_topic_popover();
     muting.add_muted_topic(stream_id, topic);
     unread_ui.update_unread_counts();
-    exports.rerender();
+    exports.rerender([[stream_name, topic]], "mute");
     exports.persist_mute(stream_id, topic);
     feedback_widget.show({
         populate(container) {
@@ -121,13 +145,14 @@ exports.mute = function (stream_id, topic) {
 };
 
 exports.unmute = function (stream_id, topic) {
+    const stream_name = stream_data.maybe_get_stream_name(stream_id);
     // we don't run a unmute_notify function because it isn't an issue as much
     // if someone accidentally unmutes a stream rather than if they mute it
     // and miss out on info.
     stream_popover.hide_topic_popover();
     muting.remove_muted_topic(stream_id, topic);
     unread_ui.update_unread_counts();
-    exports.rerender();
+    exports.rerender([[stream_name, topic]], "unmute");
     exports.persist_unmute(stream_id, topic);
     feedback_widget.dismiss();
     recent_topics.update_topic_is_muted(stream_id, topic);

@@ -1,8 +1,11 @@
 "use strict";
 
+const message_list_data_cache = require("./message_list_data_cache");
 const people = require("./people");
 const pm_conversations = require("./pm_conversations");
 const util = require("./util");
+
+const mld_cache = message_list_data_cache.mld_cache;
 
 const stored_messages = new Map();
 
@@ -235,7 +238,7 @@ exports.reify_message_id = function (opts) {
         stored_messages.delete(old_id);
     }
 
-    for (const msg_list of [message_list.all, home_msg_list, message_list.narrowed]) {
+    for (const msg_list of all_message_lists()) {
         if (msg_list !== undefined) {
             msg_list.change_message_id(old_id, new_id);
 
@@ -244,6 +247,7 @@ exports.reify_message_id = function (opts) {
             }
         }
     }
+    mld_cache.forEach((mld) => mld.change_message_id(old_id, new_id));
 };
 
 window.message_store = exports;
