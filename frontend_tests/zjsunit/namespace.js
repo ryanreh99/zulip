@@ -8,14 +8,26 @@ const requires = [];
 const new_globals = new Set();
 let old_globals = {};
 
-exports.set_global = function (name, val) {
+function save_globals(name) {
     if (!(name in old_globals)) {
         if (!(name in global)) {
             new_globals.add(name);
         }
         old_globals[name] = global[name];
     }
+}
+
+exports.set_global = function (name, val) {
+    save_globals(name);
     global[name] = val;
+    return val;
+};
+
+exports.stub_class_methods = function (class_name, val) {
+    save_globals(class_name);
+    for (const [method, f] of Object.entries(val)) {
+        global[class_name].prototype[method] = f;
+    }
     return val;
 };
 
